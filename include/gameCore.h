@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include "videoCore.h"
+#include "coreNetwork.h"
 
 const int FPS = 30;
 const int FrameDuration = 1000 / FPS;
@@ -14,6 +15,7 @@ class gameCore
 	Uint8* game_keys;
 	SDL_Event game_event;
 	videoCore *game_video;
+	coreNetwork *game_network;
 	
 	public:
 	gameCore(void);

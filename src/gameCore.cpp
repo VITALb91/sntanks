@@ -23,6 +23,8 @@ bool gameCore::Init(int width = 800, int height = 600, int bpp = 32)
 	game_video = new videoCore();
 	
 	if ( !game_video || !game_video->CreateWindow(width,height,bpp,"Tanks",NULL,false) ) return false;
+	
+	return true;
 }
 
 
