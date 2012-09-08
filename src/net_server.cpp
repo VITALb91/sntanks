@@ -33,14 +33,18 @@ bool net_server::Init(int port)
         return false;
     }
 
-    listen(listener, 2);
+    listen(listener, 4);
     
     clients.clear();
+    
+    return true;
 }
 
 void net_server::StartListening(void)
 {
+	printf("Network server started at port...\n");
 	connected = true;
+	
 	while(connected)
     {
         fd_set readset;

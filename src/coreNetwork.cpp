@@ -2,6 +2,8 @@
 
 coreNetwork::coreNetwork(void)
 {
+	client = NULL;
+	server = NULL;
 }
 
 coreNetwork::~coreNetwork(void)

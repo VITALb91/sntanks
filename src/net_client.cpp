@@ -28,6 +28,8 @@ bool net_client::Connect(char *hostname, int port)
         return false;
     }
     connected = true;
+    
+    return true;
 }
 
 void net_client::StartTransmitting(void)
@@ -40,7 +42,7 @@ void net_client::StartTransmitting(void)
 		TODO: transfer and receiving (processing) game data
 	*/
 	
-	char message[] = "Echo from server test!\n";
+	char message[] = "Echo from server test success!\n";
 	char buf[sizeof(message)];
 	
 
