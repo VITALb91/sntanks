@@ -37,7 +37,7 @@ void net_client::StartTransmitting(void)
 	/*
 		Processing client netwok
 		
-		Now example echo-client: send message[] to server, then get buf from server
+		Now example echo-client: send message[] to server every 5 second and get it back
 		
 		TODO: transfer and receiving (processing) game data
 	*/
@@ -45,11 +45,13 @@ void net_client::StartTransmitting(void)
 	char message[] = "Echo from server test success!\n";
 	char buf[sizeof(message)];
 	
-
-    send(sock, message, sizeof(message), 0);
-    recv(sock, buf, sizeof(message), 0);
-    
-    printf(buf);
+	while(true)
+	{
+		send(sock, message, sizeof(message), 0);
+		recv(sock, buf, sizeof(message), 0);
+		printf(buf);
+		sleep(5);
+	}
 }
 
 bool net_client::get_status(void)

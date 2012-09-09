@@ -55,15 +55,17 @@ void net_server::StartListening(void)
 			FD_SET(*it, &readset);
 
         timeval timeout;
-        timeout.tv_sec = 15;
+        timeout.tv_sec = 600;
         timeout.tv_usec = 0;
 
         // Waiting for socket event
         int mx = max(listener, *max_element(clients.begin(), clients.end()));
         if(select(mx+1, &readset, NULL, NULL, &timeout) <= 0)
         {
-            printf("Select readsocket error\n");
-            connected = false;
+            //printf("Select readsocket error\n");
+            //connected = false;
+            printf("No client activity after 10 minutes\nServer is empty\n");
+            continue;
         }
         
         // Check the event

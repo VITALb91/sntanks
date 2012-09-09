@@ -8,6 +8,10 @@ int main(int argc, char **argv)
 	
 	switch(argc)
 	{
+		case 1:
+			// no args. Use app as server on 7777 port
+			if (!tanks.Init(800,600,32,NULL,7777)) return -1;
+			break;
 		case 2:
 			// server
 			port = atoi(argv[1]);

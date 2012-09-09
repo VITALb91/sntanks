@@ -30,6 +30,7 @@ class gameCore
 	void Start(void);
 	void RenderScene(void);
 	void NetStart(void);
+	void playerInput(void);
 };
 
 #endif

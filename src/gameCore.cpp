@@ -58,6 +58,8 @@ void gameCore::Start()
 		Starting all subsystems here
 	*/
 	
+	
+	// network starts at another thread
 	SDL_Thread *network_thread = SDL_CreateThread( StartNetwork_thread, this);
     if ( network_thread == NULL ) 
     {
@@ -72,6 +74,7 @@ void gameCore::Start()
 	
 	while(done == 0)
 	{  
+		loops = 0;
    
 		while ( SDL_PollEvent(&game_event) )
 		{ 
@@ -84,9 +87,7 @@ void gameCore::Start()
 		
 		while( SDL_GetTicks() > nextFrameTime && loops < MaxFrameSkip )
 		{
-			/*
-				player input listener here
-			*/
+			playerInput();
 			nextFrameTime += FrameDuration;
 			loops++;
 		}
@@ -105,4 +106,9 @@ void gameCore::RenderScene()
 void gameCore::NetStart(void)
 {
 	game_network->Start();
+}
+
+void gameCore::playerInput(void)
+{
+	// input listener
 }
