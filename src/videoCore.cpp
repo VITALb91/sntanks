@@ -110,3 +110,8 @@ int videoCore::get_height()
 {
 	return (user_screen->h);
 }
+
+SDL_Surface* videoCore::get_screen()
+{
+	return user_screen;
+}

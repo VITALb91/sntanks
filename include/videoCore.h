@@ -19,6 +19,7 @@ class videoCore
 	void ScreenUnlock();
 	int get_width();
 	int get_height();
+	SDL_Surface* get_screen();
 };
 
 #endif

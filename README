@@ -1,1 +1,25 @@
-work in progress...
+Simple Network Tanks (uses SDL 1.2)
+
+
+===============================================
+Compiling:
+make
+
+===============================================
+Starting:
+./sntanks [port] [hostname]
+
+	port: server port
+	hostname: server hostname
+
+if no hostname given -> game will start as server on given port
+if no port and hostname given -> game will start as server on standart port 7777
+===============================================
+TODO (main):
+- Audio subsystem;
+- Level objects (blocks, boxes, bonuses, etc). Or some map structure and it's generator;
+- Shooting logic;
+- Collision checker;
+- Network interaction;
+===============================================
+

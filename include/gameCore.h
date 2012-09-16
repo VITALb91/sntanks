@@ -8,11 +8,14 @@
 #include "SDL_mutex.h"
 #include "videoCore.h"
 #include "coreNetwork.h"
+#include "playerObj.h"
 
 const int FPS = 30;
 const int FrameDuration = 1000 / FPS;
 const int MaxFrameSkip = 10;
 
+
+void LoadTankSprites();
 int StartNetwork_thread(void *data);
 
 class gameCore
@@ -22,6 +25,7 @@ class gameCore
 	SDL_Event game_event;
 	videoCore *game_video;
 	coreNetwork *game_network;
+	playerObj players[MAX_PLAYERS];
 	
 	public:
 	gameCore(void);
