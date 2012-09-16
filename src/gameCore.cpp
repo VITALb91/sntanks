@@ -158,64 +158,123 @@ void gameCore::playerInput(void)
 	
 	players[selfID].stopAnim();
 	
-	if (game_keys[SDLK_LEFT] && collision(SDLK_LEFT))
+	if (game_keys[SDLK_LEFT])
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_LEFT);
-		players[selfID].xadd(-speed);
+		if (collision(SDLK_LEFT))
+			players[selfID].xadd(-speed);
 	}
 	
-	if (game_keys[SDLK_RIGHT] && collision(SDLK_RIGHT))
+	if (game_keys[SDLK_RIGHT])
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_RIGHT);
-		players[selfID].xadd(speed);
+		if (collision(SDLK_RIGHT))
+			players[selfID].xadd(speed);
 	}
 	
-	if (game_keys[SDLK_UP] && collision(SDLK_UP))
+	if (game_keys[SDLK_UP])
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_UP);
-		players[selfID].yadd(-speed);
+		if (collision(SDLK_UP))
+			players[selfID].yadd(-speed);
 	}
 	
-	if (game_keys[SDLK_DOWN] && collision(SDLK_DOWN))
+	if (game_keys[SDLK_DOWN])
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_DOWN);
-		players[selfID].yadd(speed);
+		if (collision(SDLK_DOWN))
+			players[selfID].yadd(speed);
 	}
 	
 }
 
 bool gameCore::collision (int keyPress)
 {
+	bool isTrue = false;
 	switch (keyPress)
 	{
 		case SDLK_DOWN:
-			if (players[selfID].getY() < game_video->get_height()-32)
+			if (players[selfID].getY() < game_video->get_height()-TankSpriteBase[selfID].sH)
 			{
-				/*for (int i = 0; i < MAX_PLAYERS-1; i++)
+				for (int i = 0; i < MAX_PLAYERS; i++)
 				{
 					if (i != selfID)
-				}*/return true;
+					{
+						if (players[selfID].getY()+TankSpriteBase[selfID].sH == players[i].getY() &&
+							((players[selfID].getX() >= players[i].getX() &&
+							players[selfID].getX() <= players[i].getX()+TankSpriteBase[i].sW) ||
+							(players[selfID].getX()+TankSpriteBase[selfID].sW <= players[i].getX()+TankSpriteBase[i].sW &&
+							players[selfID].getX()+TankSpriteBase[selfID].sW >= players[i].getX()))) return false;
+						else isTrue = true;
+					}
+				}
 			}
-			else return false;
+			else isTrue = false;
+			return isTrue;
 		break;
 		
 		case SDLK_UP:
-			if (players[selfID].getY() >= 0) return true;
-			else return false;
+			if (players[selfID].getY() >= 0)
+			{
+				for (int i = 0; i < MAX_PLAYERS; i++)
+				{
+					if (i != selfID)
+					{
+						if (players[selfID].getY() == players[i].getY()+TankSpriteBase[i].sH &&
+							((players[selfID].getX() >= players[i].getX() &&
+							players[selfID].getX() <= players[i].getX()+TankSpriteBase[i].sW) ||
+							(players[selfID].getX()+TankSpriteBase[selfID].sW <= players[i].getX()+TankSpriteBase[i].sH &&
+							players[selfID].getX()+TankSpriteBase[selfID].sW >= players[i].getX()))) return false;
+						else isTrue = true;
+					}
+				}
+			}
+			else isTrue = false;
+			return isTrue;
 		break;
 		
 		case SDLK_RIGHT:
-			if (players[selfID].getX() < game_video->get_width()-32) return true;
-			else return false;
+			if (players[selfID].getX() < game_video->get_width()-TankSpriteBase[selfID].sW)
+			{
+				for (int i = 0; i < MAX_PLAYERS; i++)
+				{
+					if (i != selfID)
+					{
+						if (players[selfID].getX()+TankSpriteBase[i].sW == players[i].getX() &&
+							((players[selfID].getY() >= players[i].getY() &&
+							players[selfID].getY() <= players[i].getY() +TankSpriteBase[i].sH) ||
+							(players[selfID].getY()+TankSpriteBase[i].sH <= players[i].getY()+TankSpriteBase[i].sH &&
+							players[selfID].getY()+TankSpriteBase[i].sH >= players[i].getY()))) return false;
+						else isTrue = true;
+					}
+				}
+			}
+			else isTrue = false;
+			return isTrue;
 		break;
 		
 		case SDLK_LEFT:
-			if (players[selfID].getX() >= 0) return true;
-			else return false;
+			if (players[selfID].getX() >= 0)
+			{
+				for (int i = 0; i < MAX_PLAYERS; i++)
+				{
+					if (i != selfID)
+					{
+						if (players[selfID].getX() == players[i].getX()+TankSpriteBase[i].sW &&
+							((players[selfID].getY() >= players[i].getY() &&
+							players[selfID].getY() <= players[i].getY() +TankSpriteBase[i].sH) ||
+							(players[selfID].getY()+TankSpriteBase[i].sH <= players[i].getY()+TankSpriteBase[i].sH &&
+							players[selfID].getY()+TankSpriteBase[i].sH >= players[i].getY()))) return false;
+						else isTrue = true;
+					}
+				}
+			}
+			else isTrue = false;
+			return isTrue;
 		break;
 	}
 }
