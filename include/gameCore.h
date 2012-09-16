@@ -35,6 +35,7 @@ class gameCore
 	void RenderScene(void);
 	void NetStart(void);
 	void playerInput(void);
+	bool collision(int keyPress);
 };
 
 #endif

@@ -195,10 +195,10 @@ bool gameCore::collision (int keyPress)
 		case SDLK_DOWN:
 			if (players[selfID].getY() < game_video->get_height()-32)
 			{
-				for (int i = 0; i < MAX_PLAYERS-1; i++)
+				/*for (int i = 0; i < MAX_PLAYERS-1; i++)
 				{
 					if (i != selfID)
-				}
+				}*/return true;
 			}
 			else return false;
 		break;
