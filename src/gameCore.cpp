@@ -158,32 +158,64 @@ void gameCore::playerInput(void)
 	
 	players[selfID].stopAnim();
 	
-	if (game_keys[SDLK_LEFT])
+	if (game_keys[SDLK_LEFT] && collision(SDLK_LEFT))
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_LEFT);
 		players[selfID].xadd(-speed);
 	}
 	
-	if (game_keys[SDLK_RIGHT])
+	if (game_keys[SDLK_RIGHT] && collision(SDLK_RIGHT))
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_RIGHT);
 		players[selfID].xadd(speed);
 	}
 	
-	if (game_keys[SDLK_UP])
+	if (game_keys[SDLK_UP] && collision(SDLK_UP))
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_UP);
 		players[selfID].yadd(-speed);
 	}
 	
-	if (game_keys[SDLK_DOWN])
+	if (game_keys[SDLK_DOWN] && collision(SDLK_DOWN))
 	{
 		players[selfID].startAnim();
 		players[selfID].setOrientation(TANK_DOWN);
 		players[selfID].yadd(speed);
 	}
 	
+}
+
+bool gameCore::collision (int keyPress)
+{
+	switch (keyPress)
+	{
+		case SDLK_DOWN:
+			if (players[selfID].getY() < game_video->get_height()-32)
+			{
+				for (int i = 0; i < MAX_PLAYERS-1; i++)
+				{
+					if (i != selfID)
+				}
+			}
+			else return false;
+		break;
+		
+		case SDLK_UP:
+			if (players[selfID].getY() >= 0) return true;
+			else return false;
+		break;
+		
+		case SDLK_RIGHT:
+			if (players[selfID].getX() < game_video->get_width()-32) return true;
+			else return false;
+		break;
+		
+		case SDLK_LEFT:
+			if (players[selfID].getX() >= 0) return true;
+			else return false;
+		break;
+	}
 }

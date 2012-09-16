@@ -89,6 +89,8 @@ class playerObj
 	int getID() { return ID; }
 	void setHP(int hp) { health = hp; } 
 	int getSpeed() { return speedPPX; }
+	int getX() { return sX; }
+	int getY() { return sY; }
 };
 
 #endif
