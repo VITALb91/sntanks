@@ -42,7 +42,7 @@ bool net_server::Init(int port)
 
 void net_server::StartListening(void)
 {
-	printf("Network server started at port...\n");
+	printf("Network server started...\n");
 	connected = true;
 	
 	while(connected)

@@ -8,6 +8,7 @@ playerObj::playerObj()
 	sDrawn = 0;
 	sFrame = 0;
 	Orientation = TANK_RIGHT;
+	sLastupdate = 0;
 }
 
 int spriteBase::init(spriteInit* data)
@@ -21,7 +22,7 @@ int spriteBase::init(spriteInit* data)
 	sNumFrames = data->numFrames;
   
 	SDL_Surface *temp;
-	if((temp=SDL_LoadBMP(data->bmpFile))==NULL) return -1;
+	if ((temp = SDL_LoadBMP(data->bmpFile))==NULL) return -1;
   
 	sW = temp->w/sNumFrames;
 	sH = temp->h/sNumFrames;
@@ -47,12 +48,12 @@ int spriteBase::init(spriteInit* data)
 		amask = 0xff000000;
 	#endif
 	temp1 = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCCOLORKEY, sW, sH, 32, rmask, gmask, bmask, amask);
+	
 	if(temp1 == NULL) 
 	{
-		fprintf(stderr, "CreateRGBSurface temp1 failed: %s\n", SDL_GetError());
+		printf("CreateRGBSurface temp1 failed: %s\n", SDL_GetError());
 		return -1;
 	}
-
   
 	for(int j = 0; j<sNumFrames; j++)
 	{
@@ -79,7 +80,7 @@ int spriteBase::init(spriteInit* data)
 int playerObj::init(spriteBase *base, SDL_Surface *screen)
 {
 	sSpriteBase = base;
-	if(sSpriteBase->sNumFrames>1) sAnimating=1;
+	sAnimating = (sSpriteBase->sNumFrames>1)? 1 : 0;
     sBackreplacement = SDL_DisplayFormat(sSpriteBase->sAnim[0][0].image);
 	sScreen = screen;
 	return 0;
@@ -105,24 +106,24 @@ void playerObj::updateBG()
 	srcrect.h = sSpriteBase->sH;
 	srcrect.x = sX;
 	srcrect.y = sY;
-	sOldX=sX;
-	sOldY=sY;
+	sOldX = sX;
+	sOldY = sY;
 	SDL_BlitSurface(sScreen, &srcrect, sBackreplacement, NULL);
 }
 
 void playerObj::draw()
 {
-	if(sAnimating == 1)
+	if(sAnimating)
 	{
 		if(sLastupdate+sSpriteBase->sPause*sSpeed < SDL_GetTicks())
 		{
 			sFrame++;
-			if(sFrame>sSpriteBase->sNumFrames-1) sFrame=0;
+			if(sFrame>sSpriteBase->sNumFrames-1) sFrame = 0;
 			sLastupdate = SDL_GetTicks();
 		}
 	}
 
-	if(sDrawn==0) sDrawn=1;
+	if(sDrawn == 0) sDrawn = 1;
 
 	SDL_Rect dest;
 	dest.x = sX; dest.y = sY;

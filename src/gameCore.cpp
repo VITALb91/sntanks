@@ -3,7 +3,13 @@
 struct BMPfile
 {
 	char *filename;
-} spriteFiles[MAX_PLAYERS] = { "data/Tank1.bmp", "data/Tank2.bmp", "data/Tank3.bmp", "data/Tank4.bmp" };
+} spriteFiles[MAX_PLAYERS] = 
+{ 
+	"data/sprite/Tank1.bmp",
+	"data/sprite/Tank2.bmp",
+	"data/sprite/Tank3.bmp",
+	"data/sprite/Tank4.bmp" 
+};
 
 spriteBase TankSpriteBase[MAX_PLAYERS];
 
@@ -33,6 +39,7 @@ int StartNetwork_thread(void *data)
 gameCore::gameCore()
 {
 	game_video = NULL;
+	game_audio = NULL;
 	game_network = NULL;
 }
 
@@ -40,14 +47,16 @@ gameCore::~gameCore()
 {
 	SDL_Quit();
 	delete game_video;
+	delete game_audio;
 	delete game_network;
 	game_video = NULL;
+	game_audio = NULL;
 	game_network = NULL;
 }
 
 bool gameCore::Init(int width, int height, int bpp, char *hostname, int port)
 {
-	if ( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 )
+	if ( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER ) < 0 )
 	{ 
 		printf("Unable to init SDL: %s\n", SDL_GetError()); 
 		return false;
@@ -57,6 +66,13 @@ bool gameCore::Init(int width, int height, int bpp, char *hostname, int port)
 	if ( !game_video || !game_video->CreateWindow(width,height,bpp,"Tanks",NULL,false) )
 	{
 		printf("Init video-subsystem error\n");
+		return false;
+	}
+		
+	game_audio = new audioCore();
+	if ( !game_audio || !game_audio->Init(80) )
+	{
+		printf("Init audio-subsystem error\n");
 		return false;
 	}
 	
@@ -70,6 +86,7 @@ bool gameCore::Init(int width, int height, int bpp, char *hostname, int port)
 	#ifdef __DEBUG_MODE__
 		printf("Network subsystem initiation successful.\n");
 		printf("Video subsystem initiation successful.\n");
+		printf("Audio subsystem initiation successful.\n");
 	#endif
 	
 	LoadTankSprites();
@@ -155,8 +172,20 @@ void gameCore::playerInput(void)
 	// input listener
 	
 	int speed = players[selfID].getSpeed();
+	bool is_moving = (game_keys[SDLK_LEFT] || game_keys[SDLK_RIGHT] || game_keys[SDLK_UP] || game_keys[SDLK_DOWN]);
+	
+	if (!is_moving) game_audio->StopSound(1); else game_audio->PlaySound(SND_move,1,-1);
 	
 	players[selfID].stopAnim();
+	
+	if (game_keys[SDLK_SPACE])
+	{
+		/*
+			Shooting event
+			TODO: make animation of the bullet and it's collision
+		*/
+		game_audio->PlaySound(SND_shoot, 2, 1000);
+	}
 	
 	if (game_keys[SDLK_LEFT])
 	{
@@ -165,7 +194,7 @@ void gameCore::playerInput(void)
 		if (collision(SDLK_LEFT))
 			players[selfID].xadd(-speed);
 	}
-	
+	else
 	if (game_keys[SDLK_RIGHT])
 	{
 		players[selfID].startAnim();
@@ -173,7 +202,7 @@ void gameCore::playerInput(void)
 		if (collision(SDLK_RIGHT))
 			players[selfID].xadd(speed);
 	}
-	
+	else
 	if (game_keys[SDLK_UP])
 	{
 		players[selfID].startAnim();
@@ -181,7 +210,7 @@ void gameCore::playerInput(void)
 		if (collision(SDLK_UP))
 			players[selfID].yadd(-speed);
 	}
-	
+	else
 	if (game_keys[SDLK_DOWN])
 	{
 		players[selfID].startAnim();

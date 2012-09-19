@@ -22,4 +22,4 @@ TODO (main):
 - Collision checker;
 - Network interaction;
 ===============================================
-
+Required packages: libasound2-dev, libpulse-dev.

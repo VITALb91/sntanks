@@ -7,6 +7,7 @@
 #include "SDL_thread.h"
 #include "SDL_mutex.h"
 #include "videoCore.h"
+#include "audioCore.h"
 #include "coreNetwork.h"
 #include "playerObj.h"
 
@@ -24,6 +25,7 @@ class gameCore
 	Uint8* game_keys;
 	SDL_Event game_event;
 	videoCore *game_video;
+	audioCore *game_audio;
 	coreNetwork *game_network;
 	playerObj players[MAX_PLAYERS];
 	
